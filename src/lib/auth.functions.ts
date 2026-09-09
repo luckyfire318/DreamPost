@@ -26,10 +26,6 @@ function publishableClient() {
   });
 }
 
-/**
- * Bootstraps the very first admin account from server secrets, if none exists yet.
- * Returns the admin email when the supplied handle matches the bootstrap admin.
- */
 async function bootstrapAdminIfNeeded(handle: string, password: string): Promise<string | null> {
   const bootUser = (process.env["ADMIN_BOOTSTRAP_USERNAME"] ?? "").replace(/^@+/, "").toLowerCase();
   const bootPass = process.env["ADMIN_BOOTSTRAP_PASSWORD"] ?? "";
@@ -55,6 +51,7 @@ async function bootstrapAdminIfNeeded(handle: string, password: string): Promise
     id: created.user.id,
     full_name: "DreamPost Admin",
     username: bootUser,
+    login_username: bootUser,
     email,
     status: "approved",
     details_locked: true,
@@ -64,8 +61,8 @@ async function bootstrapAdminIfNeeded(handle: string, password: string): Promise
 }
 
 /**
- * Signs in with a username, gmail or admin user id. The resolution happens fully
- * server side so member email addresses are never disclosed to the browser.
+ * Signs in with a username or email. Username resolution uses the same normalized
+ * login_username field maintained in public.profiles. Email login uses Supabase Auth directly.
  */
 export const signInWithIdentifier = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => loginSchema.parse(input))
@@ -81,7 +78,7 @@ export const signInWithIdentifier = createServerFn({ method: "POST" })
       const { data: profile } = await supabaseAdmin
         .from("profiles")
         .select("email")
-        .ilike("username", handle)
+        .eq("login_username", handle)
         .maybeSingle();
       if (profile?.email) candidates.push(profile.email);
       const bootstrapped = await bootstrapAdminIfNeeded(handle, data.password);
@@ -137,7 +134,7 @@ export const updateAdminCredentials = createServerFn({ method: "POST" })
 
     const { error: profileError } = await supabaseAdmin
       .from("profiles")
-      .update({ username: data.username, email })
+      .update({ username: data.username, login_username: data.username, email })
       .eq("id", context.userId);
     if (profileError) throw new Error(profileError.message);
 
@@ -153,7 +150,7 @@ export const isUsernameAvailable = createServerFn({ method: "POST" })
     const { data: existing } = await supabaseAdmin
       .from("profiles")
       .select("id")
-      .ilike("username", data.username.replace(/^@+/, "").toLowerCase())
+      .eq("login_username", data.username.replace(/^@+/, "").toLowerCase())
       .maybeSingle();
     return { available: !existing };
   });
