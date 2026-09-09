@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { signInWithIdentifier } from "@/lib/auth.functions";
 
 export const Route = createFileRoute("/admin-login")({
   head: () => ({
@@ -22,17 +21,24 @@ export const Route = createFileRoute("/admin-login")({
 
 function AdminLogin() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (!identifier.trim() || !password) return;
     setBusy(true);
     try {
-      const session = await signInWithIdentifier({ data: { identifier: username, password } });
-      const { error } = await supabase.auth.setSession(session);
-      if (error) throw new Error("Wrong user id or password");
+      const raw = identifier.trim();
+      let email = raw.toLowerCase();
+      if (!raw.includes("@")) {
+        const { data, error } = await supabase.rpc("resolve_login_email", { p_username: raw });
+        if (error || !data) throw new Error("Wrong username or password");
+        email = data;
+      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw new Error("Wrong username or password");
       await navigate({ to: "/admin/posts", replace: true });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not sign in");
@@ -52,24 +58,12 @@ function AdminLogin() {
           <p className="text-sm text-muted-foreground">Sign in with your admin credentials.</p>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="admin-user">User id</Label>
-          <Input
-            id="admin-user"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="@yourid"
-            autoComplete="username"
-          />
+          <Label htmlFor="admin-user">Username or email</Label>
+          <Input id="admin-user" value={identifier} onChange={(e) => setIdentifier(e.target.value)} placeholder="Username or email" autoComplete="username" />
         </div>
         <div className="space-y-2">
           <Label htmlFor="admin-pass">Password</Label>
-          <Input
-            id="admin-pass"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-          />
+          <Input id="admin-pass" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
         </div>
         <Button type="submit" className="w-full rounded-full" disabled={busy}>
           {busy ? "Signing in…" : "Enter panel"}
