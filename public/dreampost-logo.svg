@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc">
+  <title id="title">DreamPost</title>
+  <desc id="desc">DreamPost gradient envelope and wordmark logo</desc>
+  <defs>
+    <linearGradient id="dreamGradient" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#7b2cff"/>
+      <stop offset="28%" stop-color="#ec008c"/>
+      <stop offset="58%" stop-color="#ff3b55"/>
+      <stop offset="82%" stop-color="#ff8a00"/>
+      <stop offset="100%" stop-color="#ffd000"/>
+    </linearGradient>
+    <linearGradient id="warmGradient" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#ec008c"/>
+      <stop offset="55%" stop-color="#ff4b3e"/>
+      <stop offset="100%" stop-color="#ffd000"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#dreamGradient)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M185 230 C300 70 920 55 1100 205" stroke-width="18"/>
+    <path d="M210 258 C390 120 870 120 1075 230" stroke-width="7"/>
+    <path d="M185 330 C410 420 900 405 1090 260" stroke-width="18"/>
+    <path d="M230 340 C470 385 870 375 1050 285" stroke-width="7"/>
+  </g>
+  <g fill="none" stroke="url(#dreamGradient)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M155 190 L300 190 L405 275 L300 360 L155 360 L260 275 Z" stroke-width="18"/>
+    <path d="M155 190 L300 315 L405 190" stroke-width="18"/>
+    <path d="M105 235 H215 M85 275 H190 M105 315 H215" stroke-width="13"/>
+  </g>
+  <text x="325" y="315" font-family="Brush Script MT, Segoe Script, cursive" font-size="175" font-weight="700" font-style="italic" fill="url(#warmGradient)" letter-spacing="-7">DreamPost</text>
+</svg>
