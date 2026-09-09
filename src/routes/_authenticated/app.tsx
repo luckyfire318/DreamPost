@@ -1,7 +1,6 @@
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Home, MessageCircle, User } from "lucide-react";
-import logo from "@/assets/dreampost_logo.png.asset.json";
 import { useSession } from "@/lib/session";
 import { cn } from "@/lib/utils";
 
@@ -27,8 +26,8 @@ function MemberShell() {
   return (
     <div className="min-h-screen bg-background pb-24">
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
-        <div className="mx-auto flex h-20 max-w-2xl items-center justify-between px-4">
-          <img src={logo.url} alt="DreamPost" className="h-12 sm:h-14" />
+        <div className="mx-auto flex h-20 max-w-2xl items-center justify-center px-4">
+          <img src="/dreampost-logo.svg" alt="DreamPost" className="h-14 w-auto max-w-[250px] object-contain sm:h-16" />
         </div>
       </header>
 
