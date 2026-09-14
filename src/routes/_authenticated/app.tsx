@@ -26,35 +26,12 @@ function MemberShell() {
   return (
     <div className="min-h-screen bg-background pb-24">
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-2xl items-center justify-center px-4">
-          <img src="/dreampost-logo.svg" alt="DreamPost" className="h-10 w-10 object-contain sm:h-11 sm:w-11" />
+        <div className="mx-auto flex h-20 max-w-2xl items-center justify-center px-4">
+          <img src="/dreampost-logo.svg" alt="DreamPost" className="h-14 w-auto max-w-[250px] object-contain sm:h-16" />
         </div>
       </header>
-
-      <main className="mx-auto w-full max-w-2xl px-4 py-6">
-        <Outlet />
-      </main>
-
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex max-w-2xl items-stretch">
-          {NAV.map((item) => {
-            const active = pathname.startsWith(item.to);
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={cn(
-                  "flex flex-1 flex-col items-center gap-1 py-3 text-xs font-medium transition-colors",
-                  active ? "text-primary" : "text-muted-foreground",
-                )}
-              >
-                <item.icon className="h-5 w-5" />
-                {item.label}
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
+      <main className="mx-auto w-full max-w-2xl px-4 py-6"><Outlet /></main>
+      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 backdrop-blur"><div className="mx-auto flex max-w-2xl items-stretch">{NAV.map((item) => { const active = pathname.startsWith(item.to); return <Link key={item.to} to={item.to} className={cn("flex flex-1 flex-col items-center gap-1 py-3 text-xs font-medium transition-colors", active ? "text-primary" : "text-muted-foreground")}><item.icon className="h-5 w-5" />{item.label}</Link>; })}</div></nav>
     </div>
   );
 }
