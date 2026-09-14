@@ -1,7 +1,6 @@
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Images, MessagesSquare, Settings, Users } from "lucide-react";
-import logo from "@/assets/dreampost_logo.png.asset.json";
 import { useSession } from "@/lib/session";
 import { cn } from "@/lib/utils";
 
@@ -40,7 +39,7 @@ function AdminShell() {
     <div className="min-h-screen bg-background pb-24">
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4">
-          <img src={logo.url} alt="DreamPost" className="h-12 sm:h-14" />
+          <img src="/dreampost-dp-logo.svg" alt="DreamPost" className="h-10 w-10 object-contain sm:h-11 sm:w-11" />
           <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold">Admin panel</span>
         </div>
       </header>
