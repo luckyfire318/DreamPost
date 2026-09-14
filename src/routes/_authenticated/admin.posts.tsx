@@ -6,7 +6,6 @@ import { ImagePlus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { CropDialog } from "@/components/CropDialog";
 import { type PostRow } from "@/components/PostCard";
 import { PostGrid } from "@/components/PostGrid";
 import { PullToRefresh } from "@/components/PullToRefresh";
@@ -27,7 +26,6 @@ function AdminPosts() {
   const qc = useQueryClient();
   const [caption, setCaption] = useState("");
   const [drafts, setDrafts] = useState<Draft[]>([]);
-  const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
 
   const { data: limits } = useQuery({
@@ -59,7 +57,7 @@ function AdminPosts() {
       const { data: post, error } = await (supabase as any).from("community_posts").insert({ author_id: user!.id, caption: caption.trim() || null, status: "published", hidden: false }).select("id").single();
       if (error) throw new Error(error.message);
       for (const [index, draft] of drafts.entries()) {
-        const ext = draft.type.startsWith("video") ? "mp4" : "jpg";
+        const ext = draft.type.startsWith("video") ? "mp4" : (draft.type.split("/")[1] || "jpg").replace("jpeg", "jpg");
         const path = `${post.id}/${crypto.randomUUID()}.${ext}`;
         await uploadFile("post-media", path, draft.blob, draft.type);
         const { error: mediaError } = await (supabase as any).from("post_media").insert({ post_id: post.id, storage_path: path, media_type: draft.type.startsWith("video") ? "video" : "image", position: index, sort_order: index, mime_type: draft.type, file_size_bytes: draft.blob.size });
@@ -94,8 +92,7 @@ function AdminPosts() {
     const problem = checkSize(file, imageLimit, videoLimit);
     if (problem) { toast.error(problem); return; }
     if (drafts.length >= MAX_MEDIA) { toast.error(`You can share up to ${MAX_MEDIA} files at once`); return; }
-    if (file.type.startsWith("video/")) setDrafts((d) => [...d, { id: crypto.randomUUID(), blob: file, url: URL.createObjectURL(file), type: file.type }]);
-    else setCropSrc(URL.createObjectURL(file));
+    setDrafts((d) => [...d, { id: crypto.randomUUID(), blob: file, url: URL.createObjectURL(file), type: file.type }]);
   }
 
   return (
@@ -112,7 +109,6 @@ function AdminPosts() {
         </section>
         <PostGrid posts={posts ?? []} userId={user!.id} isAdmin canInteract onDeletePost={(id) => setPendingDelete(id)} onToggleHidden={(post) => toggleHidden.mutate(post)} />
         <AlertDialog open={!!pendingDelete} onOpenChange={(o) => !o && setPendingDelete(null)}><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Delete this post?</AlertDialogTitle><AlertDialogDescription>This permanently removes the post, its media and comments for everyone. This cannot be undone.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel disabled={removePost.isPending}>Cancel</AlertDialogCancel><AlertDialogAction disabled={removePost.isPending} onClick={(e) => { e.preventDefault(); if (pendingDelete && !removePost.isPending) removePost.mutate(pendingDelete); }}>{removePost.isPending ? "Deleting…" : "Delete"}</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>
-        <CropDialog open={!!cropSrc} src={cropSrc} aspect={0} title="Crop before posting" onCancel={() => setCropSrc(null)} onDone={(blob) => { setDrafts((d) => [...d, { id: crypto.randomUUID(), blob, url: URL.createObjectURL(blob), type: "image/jpeg" }]); setCropSrc(null); }} />
       </div>
     </PullToRefresh>
   );
