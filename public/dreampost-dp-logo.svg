@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">DreamPost DP logo</title>
+  <desc id="desc">A white DP monogram with a sparkle on a blue to purple gradient rounded square.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1677ff"/>
+      <stop offset="0.52" stop-color="#4b35ed"/>
+      <stop offset="1" stop-color="#d52eea"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#bg)"/>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#shine)"/>
+  <path fill="#fff" d="M139 111h112c78 0 126 43 126 111 0 69-48 112-126 112h-45v67h-67V111Zm67 58v108h43c39 0 61-18 61-55 0-36-22-53-61-53h-43Z"/>
+  <path fill="#fff" d="M230 111h94c72 0 112 40 112 101 0 62-40 102-112 102h-27v-58h22c33 0 50-15 50-44 0-28-17-43-50-43h-22v110h-67V111Z" opacity="0.96"/>
+  <path fill="#fff" d="m405 93 8 22 22 8-22 8-8 22-8-22-22-8 22-8 8-22Z"/>
+  <circle cx="438" cy="157" r="6" fill="#fff" opacity="0.9"/>
+</svg>
