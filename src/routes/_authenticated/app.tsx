@@ -26,8 +26,8 @@ function MemberShell() {
   return (
     <div className="min-h-screen bg-background pb-24">
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
-        <div className="mx-auto flex h-20 max-w-2xl items-center justify-center px-4">
-          <img src="/dreampost-logo.svg" alt="DreamPost" className="h-14 w-auto max-w-[250px] object-contain sm:h-16" />
+        <div className="mx-auto flex h-16 max-w-2xl items-center justify-center px-4">
+          <img src="/dreampost-logo.svg" alt="DreamPost" className="h-10 w-10 object-contain sm:h-11 sm:w-11" />
         </div>
       </header>
 
