@@ -40,32 +40,12 @@ function AdminShell() {
     <div className="min-h-screen bg-background pb-24">
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4">
-          <img src={logo.url} alt="DreamPost" className="h-10 w-10 object-contain sm:h-11 sm:w-11" />
+          <img src={logo.url} alt="DreamPost" className="h-12 sm:h-14" />
           <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold">Admin panel</span>
         </div>
       </header>
-
-      <main className="mx-auto w-full max-w-4xl px-4 py-6">
-        <Outlet />
-      </main>
-
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex max-w-4xl items-stretch">
-          {NAV.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className={cn(
-                "flex flex-1 flex-col items-center gap-1 py-3 text-xs font-medium transition-colors",
-                pathname.startsWith(item.to) ? "text-primary" : "text-muted-foreground",
-              )}
-            >
-              <item.icon className="h-5 w-5" />
-              {item.label}
-            </Link>
-          ))}
-        </div>
-      </nav>
+      <main className="mx-auto w-full max-w-4xl px-4 py-6"><Outlet /></main>
+      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 backdrop-blur"><div className="mx-auto flex max-w-4xl items-stretch">{NAV.map((item) => <Link key={item.to} to={item.to} className={cn("flex flex-1 flex-col items-center gap-1 py-3 text-xs font-medium transition-colors", pathname.startsWith(item.to) ? "text-primary" : "text-muted-foreground")}><item.icon className="h-5 w-5" />{item.label}</Link>)}</div></nav>
     </div>
   );
 }
