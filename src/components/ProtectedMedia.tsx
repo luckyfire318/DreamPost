@@ -9,9 +9,10 @@ type Props = {
   className?: string;
   alt?: string;
   allowDownload?: boolean;
+  fit?: "cover" | "contain";
 };
 
-export function ProtectedMedia({ bucket, path, type, className, alt, allowDownload }: Props) {
+export function ProtectedMedia({ bucket, path, type, className, alt, allowDownload, fit = "cover" }: Props) {
   const [url, setUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export function ProtectedMedia({ bucket, path, type, className, alt, allowDownlo
   }
 
   const isVideo = (type ?? "").startsWith("video");
+  const mediaClass = fit === "contain" ? "max-h-full max-w-full object-contain" : "h-full w-full object-cover";
 
   return (
     <div
@@ -40,10 +42,10 @@ export function ProtectedMedia({ bucket, path, type, className, alt, allowDownlo
           controls
           controlsList={allowDownload ? undefined : "nodownload noplaybackrate"}
           disablePictureInPicture={!allowDownload}
-          className="h-full w-full object-cover"
+          className={mediaClass}
         />
       ) : (
-        <img src={url} alt={alt ?? "Shared media"} className="protected-media h-full w-full object-cover" />
+        <img src={url} alt={alt ?? "Shared media"} className={cn("protected-media", mediaClass)} />
       )}
       {allowDownload ? (
         <a
